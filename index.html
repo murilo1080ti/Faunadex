@@ -47,6 +47,34 @@
             gap: 40px;
             /* Um corredor de 40px separando as colunas */
         }
+
+        /* Transformando a Mão em um Grid de 5 linhas */
+        .mao-aliado,
+        .mao-inimigo {
+            display: grid;
+            grid-template-rows: repeat(5, 1fr);
+            /* 5 linhas dividindo a altura por igual */
+            gap: 15px;
+            border: none;
+            /* Tirando a borda feia do Passo 1 */
+        }
+
+        /* Desenhando a Carta */
+        .carta {
+            background-color: #0f3460;
+            border: 2px dashed #4CAF50;
+            /* Borda Verde Tracejada */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Cartas do Inimigo ficam vermelhas */
+        .inimigo {
+            border-color: #e94560;
+            color: #e94560;
+        }
     </style>
 </head>
 
@@ -55,7 +83,11 @@
     <div class="arena">
 
         <div class="mao-aliado">
-            Mão Esquerda (Em breve 5 cartas)
+            <div class="carta">Carta 1</div>
+            <div class="carta">Carta 2</div>
+            <div class="carta">Carta 3</div>
+            <div class="carta">Carta 4</div>
+            <div class="carta">Carta 5</div>
         </div>
 
         <div class="tabuleiro">
@@ -63,7 +95,11 @@
         </div>
 
         <div class="mao-inimigo">
-            Mão Direita (Em breve 5 cartas)
+            <div class="carta inimigo">Inimigo 1</div>
+            <div class="carta inimigo">Inimigo 2</div>
+            <div class="carta inimigo">Inimigo 3</div>
+            <div class="carta inimigo">Inimigo 4</div>
+            <div class="carta inimigo">Inimigo 5</div>
         </div>
 
     </div>
