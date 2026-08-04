@@ -75,6 +75,35 @@
             border-color: #e94560;
             color: #e94560;
         }
+
+        .tabuleiro {
+            display: grid;
+            /* Magia Pura: 3 colunas iguais, 3 linhas fluidas iguais */
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+
+            background-color: #0d1b2a;
+            border: 3px solid #e94560;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .slot {
+            background-color: #1b263b;
+            border: 1px solid #415a77;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        /* Efeito ao passar o mouse */
+        .slot:hover {
+            background-color: #4CAF50;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -91,7 +120,15 @@
         </div>
 
         <div class="tabuleiro">
-            Mesa Central (Em breve 9 espaços)
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
+            <div class="slot">Mesa</div>
         </div>
 
         <div class="mao-inimigo">
