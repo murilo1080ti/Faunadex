@@ -7,32 +7,12 @@
     <style>
         body {
             background-color: #1a1a2e;
-            /* Fundo noturno */
             color: white;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* Tela inteira */
-        }
-
-        /* Apenas cores temporárias para enxergarmos as caixas */
-        .arena {
-            background-color: #16213e;
-            padding: 20px;
-        }
-
-        .mao-aliado {
-            border: 2px solid green;
-        }
-
-        .tabuleiro {
-            border: 2px solid blue;
-        }
-
-        .mao-inimigo {
-            border: 2px solid red;
         }
 
         .arena {
@@ -40,12 +20,10 @@
             padding: 30px;
             border-radius: 15px;
 
-            /* O SEGREDO DO ARQUITETO */
+            /* O SEGREDO DO ARQUITETO - CSS Grid */
             display: grid;
-            /* Eu quero 3 colunas: A primeira com 150px, a do meio com 450px e a última com 150px */
             grid-template-columns: 150px 450px 150px;
             gap: 40px;
-            /* Um corredor de 40px separando as colunas */
         }
 
         /* Transformando a Mão em um Grid de 5 linhas */
@@ -53,58 +31,42 @@
         .mao-inimigo {
             display: grid;
             grid-template-rows: repeat(5, 1fr);
-            /* 5 linhas dividindo a altura por igual */
             gap: 15px;
-            border: none;
-            /* Tirando a borda feia do Passo 1 */
         }
 
-        /* Desenhando a Carta - ATUALIZADO */
+        /* Desenhando a Carta - ATUALIZADO COM IMAGENS */
         .carta {
-            /* Tira o background azul e coloca a imagem via URL! */
             background-image: url('https://placebear.com/150/200');
             background-size: cover;
-            /* Faz a foto preencher a carta toda */
             background-position: center;
-
             border: 2px solid #4CAF50;
             border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: transparent;
-            /* Esconde o texto provisório */
             cursor: pointer;
             transition: transform 0.2s;
-            /* Animação suave */
         }
 
         /* Efeito de Hover (passar o mouse) */
         .carta:hover {
             transform: scale(1.1);
-            /* A carta cresce um pouquinho! */
             border-color: yellow;
         }
 
-        /* Cartas do Inimigo puxam outra imagem */
-        .inimigo {
+        /* Cartas do Inimigo ficam vermelhas */
+        .carta.inimigo {
             background-image: url('https://placebear.com/150/201');
             border-color: #e94560;
         }
 
-        /* Cartas do Inimigo ficam vermelhas */
-        .inimigo {
-            border-color: #e94560;
-            color: #e94560;
-        }
-
+        /* Tabuleiro 3x3 */
         .tabuleiro {
             display: grid;
-            /* Magia Pura: 3 colunas iguais, 3 linhas fluidas iguais */
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 10px;
-
             background-color: #0d1b2a;
             border: 3px solid #e94560;
             border-radius: 10px;
@@ -133,14 +95,10 @@
     <!-- A CAIXA PAI (Onde tudo acontece) -->
     <div class="arena">
 
-        <div class="mao-aliado">
-            <div class="carta">Carta 1</div>
-            <div class="carta">Carta 2</div>
-            <div class="carta">Carta 3</div>
-            <div class="carta">Carta 4</div>
-            <div class="carta">Carta 5</div>
-        </div>
+        <!-- MÃO DO ALIADO - PREENCHIDA POR JAVASCRIPT -->
+        <div class="mao-aliado"></div>
 
+        <!-- TABULEIRO 3x3 -->
         <div class="tabuleiro">
             <div class="slot">Mesa</div>
             <div class="slot">Mesa</div>
@@ -153,27 +111,69 @@
             <div class="slot">Mesa</div>
         </div>
 
-        <div class="mao-inimigo">
-            <div class="carta inimigo">Inimigo 1</div>
-            <div class="carta inimigo">Inimigo 2</div>
-            <div class="carta inimigo">Inimigo 3</div>
-            <div class="carta inimigo">Inimigo 4</div>
-            <div class="carta inimigo">Inimigo 5</div>
-        </div>
+        <!-- MÃO DO INIMIGO - PREENCHIDA POR JAVASCRIPT -->
+        <div class="mao-inimigo"></div>
 
     </div>
-    </div> <!-- Fim da Arena -->
 
     <!-- CÉREBRO DO JOGO -->
     <script>
-        // 1. O Computador precisa enxergar as cartas. Vamos selecioná-las!
-        const todasAsCartas = document.querySelectorAll('.carta');
+        // ========================================
+        // PASSO 2.3: BANCO DE DADOS DAS CARTAS
+        // ========================================
 
-        // 2. Vamos colocar um "Ouvido" em cada carta da mesa.
-        todasAsCartas.forEach(carta => {
-            carta.addEventListener('click', () => {
-                alert("Você clicou em uma carta para o Duelo!");
+        // Nosso Banco de Dados de Animais Aliados
+        const bancoDeCartasAliadas = [
+            { id: 1, nome: "Urso Alpha", forca: 8, img: "https://placebear.com/200/300" },
+            { id: 2, nome: "Urso Beta", forca: 9, img: "https://placebear.com/200/301" },
+            { id: 3, nome: "Urso Charlie", forca: 5, img: "https://placebear.com/200/302" },
+            { id: 4, nome: "Urso Delta", forca: 6, img: "https://placebear.com/200/303" },
+            { id: 5, nome: "Urso Echo", forca: 7, img: "https://placebear.com/200/304" }
+        ];
+
+        // Banco de Dados de Animais Inimigos
+        const bancoDeCartasInimigas = [
+            { id: 1, nome: "Aranha Gigante", forca: 12, img: "https://placebear.com/200/305" },
+            { id: 2, nome: "Javali Furioso", forca: 15, img: "https://placebear.com/200/306" },
+            { id: 3, nome: "Morcego Vampiro", forca: 9, img: "https://placebear.com/200/307" },
+            { id: 4, nome: "Escorpião Rei", forca: 18, img: "https://placebear.com/200/308" },
+            { id: 5, nome: "Crocodilo do Pântano", forca: 21, img: "https://placebear.com/200/309" }
+        ];
+
+        // ========================================
+        // RENDERIZANDO AS CARTAS ALIADAS
+        // ========================================
+        const maoAliado = document.querySelector('.mao-aliado');
+
+        bancoDeCartasAliadas.forEach(cartaDado => {
+            let cartaElemento = document.createElement('div');
+            cartaElemento.classList.add('carta');
+            cartaElemento.style.backgroundImage = `url(${cartaDado.img})`;
+
+            // Adiciona evento de clique
+            cartaElemento.addEventListener('click', () => {
+                alert("Você clicou na carta: " + cartaDado.nome + " com força " + cartaDado.forca);
             });
+
+            maoAliado.appendChild(cartaElemento);
+        });
+
+        // ========================================
+        // RENDERIZANDO AS CARTAS INIMIGAS
+        // ========================================
+        const maoInimigo = document.querySelector('.mao-inimigo');
+
+        bancoDeCartasInimigas.forEach(cartaDado => {
+            let cartaElemento = document.createElement('div');
+            cartaElemento.classList.add('carta', 'inimigo');
+            cartaElemento.style.backgroundImage = `url(${cartaDado.img})`;
+
+            // Adiciona evento de clique
+            cartaElemento.addEventListener('click', () => {
+                alert("Você clicou na carta inimiga: " + cartaDado.nome + " com força " + cartaDado.forca);
+            });
+
+            maoInimigo.appendChild(cartaElemento);
         });
     </script>
 </body>
