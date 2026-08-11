@@ -162,33 +162,20 @@
         </div>
 
     </div>
+    </div> <!-- Fim da Arena -->
+
+    <!-- CÉREBRO DO JOGO -->
+    <script>
+        // 1. O Computador precisa enxergar as cartas. Vamos selecioná-las!
+        const todasAsCartas = document.querySelectorAll('.carta');
+
+        // 2. Vamos colocar um "Ouvido" em cada carta da mesa.
+        todasAsCartas.forEach(carta => {
+            carta.addEventListener('click', () => {
+                alert("Você clicou em uma carta para o Duelo!");
+            });
+        });
+    </script>
 </body>
 
-</html> /* Desenhando a Carta - ATUALIZADO */
-.carta {
-/* Tira o background azul e coloca a imagem via URL! */
-background-image: url('https://placebear.com/150/200');
-background-size: cover; /* Faz a foto preencher a carta toda */
-background-position: center;
-
-border: 2px solid #4CAF50;
-border-radius: 8px;
-display: flex;
-justify-content: center;
-align-items: center;
-color: transparent; /* Esconde o texto provisório */
-cursor: pointer;
-transition: transform 0.2s; /* Animação suave */
-}
-
-/* Efeito de Hover (passar o mouse) */
-.carta:hover {
-transform: scale(1.1); /* A carta cresce um pouquinho! */
-border-color: yellow;
-}
-
-/* Cartas do Inimigo puxam outra imagem */
-.inimigo {
-background-image: url('https://placebear.com/150/201');
-border-color: #e94560;
-}
+</html>
