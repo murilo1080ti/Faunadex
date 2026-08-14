@@ -175,6 +175,58 @@
         // 4. COLOCANDO NA MESA
         // O seu appendChild antigo já estava aqui no final, não apague ele!
         maoAliado.appendChild(cartaElemento);
+        // Primeiro, capturamos todos os 9 buracos da mesa (tudo que tem a classe .slot)
+        const slotsMesa = document.querySelectorAll('.slot');
+
+        // Agora usamos o forEach para aplicar as mesmas regras magnéticas em todos os 9 buracos:
+        slotsMesa.forEach(slot => {
+
+            // 1. O VOO RASANTE (dragover)
+            // O que acontece quando a carta está SOBREVOANDO o buraco?
+            slot.addEventListener('dragover', (evento) => {
+                // MÁGICA DE HACKER: O preventDefault() cancela o bloqueio natural do navegador.
+                // Sem essa linha, o navegador diz "Não!" e a carta quica de volta pra mão.
+                evento.preventDefault();
+
+                // Efeito visual de ímã: Acendemos o buraco de verde avisando o jogador: "PODE SOLTAR!"
+                slot.style.backgroundColor = '#4CAF50';
+            });
+
+            // 2. A DESISTÊNCIA (dragleave)
+            // O que acontece quando o jogador passa a carta por cima, mas desiste e tira o mouse?
+            slot.addEventListener('dragleave', () => {
+                // Se a carta saiu de cima, apagamos a luz verde e devolvemos a cor original do buraco.
+                slot.style.backgroundColor = '#1b263b';
+            });
+
+            // 3. A TRANSFERÊNCIA DE MATÉRIA (O Pouso / drop)
+            // O que acontece no exato milissegundo em que o botão do mouse é solto?
+            slot.addEventListener('drop', (evento) => {
+                // Novamente, impedimos o navegador de tentar abrir a carta como se fosse um link.
+                evento.preventDefault();
+
+                // A carta pousou. Desligamos a luz verde do buraco.
+                slot.style.backgroundColor = '#1b263b';
+
+                // COMO ACHAMOS A CARTA CERTA?
+                // Simples: o JavaScript procura no HTML quem é a ÚNICA carta que está voando 
+                // (a que ganhou a classe .segurando no Passo 9)
+                const cartaSegurada = document.querySelector('.segurando');
+
+                // REGRA DE OURO DA ENGENHARIA DE JOGOS: 
+                // Não podemos colocar duas cartas no mesmo buraco. 
+                // O "if" abaixo verifica: "Este buraco tem zero filhos (está vazio)?"
+                if (slot.children.length === 0) {
+                    // Se estiver vazio, usamos o appendChild para MOVER a carta da mão para o tabuleiro.
+                    // O appendChild não clona a carta, ele literalmente teleporta o elemento HTML.
+                    slot.appendChild(cartaSegurada);
+
+                    // TRAVA DE SEGURANÇA: Uma vez jogada, a carta está fixada.
+                    // Tiramos a permissão de arraste para o jogador não roubar e puxar a carta de volta!
+                    cartaSegurada.setAttribute('draggable', 'false');
+                }
+            });
+        });
     </script>
 </body>
 
