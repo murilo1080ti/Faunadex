@@ -88,6 +88,16 @@
             background-color: #4CAF50;
             cursor: pointer;
         }
+
+        /* Efeito de Carta Sendo Arrastada (Feedback Visual) */
+        .segurando {
+            opacity: 0.5;
+            /* A carta original na mão fica 50% transparente */
+            transform: scale(1.1);
+            /* Dá um zoomzinho pra dar sensação de profundidade */
+            border-color: #00ffff;
+            /* Acende uma borda de neon pra ficar claro qual está selecionada */
+        }
     </style>
 </head>
 
@@ -140,41 +150,31 @@
             { id: 5, nome: "Crocodilo do Pântano", forca: 21, img: "https://placebear.com/200/309" }
         ];
 
-        // ========================================
-        // RENDERIZANDO AS CARTAS ALIADAS
-        // ========================================
-        const maoAliado = document.querySelector('.mao-aliado');
+        // ... seu código antigo que extrai os dados (cartaDado) e cria a div (cartaElemento) está aqui em cima ...
 
-        bancoDeCartasAliadas.forEach(cartaDado => {
-            let cartaElemento = document.createElement('div');
-            cartaElemento.classList.add('carta');
-            cartaElemento.style.backgroundImage = `url(${cartaDado.img})`;
+        // 1. A PERMISSÃO DE ARRASTE
+        // Dizemos ao HTML: "Ei, esta div não é estática, ela pode ser segurada e puxada pelo mouse!"
+        cartaElemento.setAttribute('draggable', 'true');
 
-            // Adiciona evento de clique
-            cartaElemento.addEventListener('click', () => {
-                alert("Você clicou na carta: " + cartaDado.nome + " com força " + cartaDado.forca);
-            });
+        // 2. O QUE ACONTECE NO EXATO MILISSEGUNDO EM QUE EU COMEÇO A PUXAR? (dragstart)
+        cartaElemento.addEventListener('dragstart', (evento) => {
+            // Colocamos uma classe CSS para mudar o visual da carta que ficou na mão enquanto o "fantasma" dela voa.
+            cartaElemento.classList.add('segurando');
 
-            maoAliado.appendChild(cartaElemento);
+            // A Mochila do Navegador: O 'dataTransfer' é uma bolsinha invisível.
+            // Guardamos nela a "forca" da carta para que o tabuleiro saiba quem está caindo nele mais tarde.
+            evento.dataTransfer.setData('text/plain', cartaDado.forca);
         });
 
-        // ========================================
-        // RENDERIZANDO AS CARTAS INIMIGAS
-        // ========================================
-        const maoInimigo = document.querySelector('.mao-inimigo');
-
-        bancoDeCartasInimigas.forEach(cartaDado => {
-            let cartaElemento = document.createElement('div');
-            cartaElemento.classList.add('carta', 'inimigo');
-            cartaElemento.style.backgroundImage = `url(${cartaDado.img})`;
-
-            // Adiciona evento de clique
-            cartaElemento.addEventListener('click', () => {
-                alert("Você clicou na carta inimiga: " + cartaDado.nome + " com força " + cartaDado.forca);
-            });
-
-            maoInimigo.appendChild(cartaElemento);
+        // 3. O QUE ACONTECE QUANDO EU SOLTO O BOTÃO DO MOUSE? (dragend)
+        cartaElemento.addEventListener('dragend', () => {
+            // A carta caiu. Tiramos a classe CSS para ela voltar a ficar com a cor normal.
+            cartaElemento.classList.remove('segurando');
         });
+
+        // 4. COLOCANDO NA MESA
+        // O seu appendChild antigo já estava aqui no final, não apague ele!
+        maoAliado.appendChild(cartaElemento);
     </script>
 </body>
 
